@@ -1,14 +1,19 @@
 package br.com.pr.alura.aluraviagens.ui.activity;
 
+import static br.com.pr.alura.aluraviagens.ui.activity.PacoteActivityConstantes.CHAVE_PACOTE;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,18 +37,40 @@ public class ResumoPacotesActivity extends AppCompatActivity {
 
         setTitle(TITULO_APP_BAR);
 
-        Pacote pacoteSaoPaulo = new Pacote("São Paulo", "sao_paulo_sp",
-                2, new BigDecimal("243.99"));
+        carregaPacoteRecebido();
 
-        mostraLocal(pacoteSaoPaulo);
-        mostraImagem(pacoteSaoPaulo);
-        mostraDias(pacoteSaoPaulo);
-        mostraPreco(pacoteSaoPaulo);
-        mostraData(pacoteSaoPaulo);
+    }
 
-        Intent intent = new Intent(this, PagamentoActivity.class);
+    private void carregaPacoteRecebido() {
+        Intent intent = getIntent();
+        if(intent.hasExtra(CHAVE_PACOTE)){
+            final Pacote pacote = (Pacote) intent.getSerializableExtra(CHAVE_PACOTE);
+
+            inicializaCampos(pacote);
+            configuraBotao(pacote);
+        }
+    }
+
+    private void configuraBotao(Pacote pacote) {
+        Button botaoRealizaPagamento = findViewById(R.id.resumo_pacote_botao_realiza_pagamento);
+        botaoRealizaPagamento.setOnClickListener(v -> {
+            vaiParaPagamento(pacote);
+        });
+    }
+
+    private void vaiParaPagamento(Pacote pacote) {
+        Intent intent = new Intent(ResumoPacotesActivity.this,
+                PagamentoActivity.class);
+        intent.putExtra(CHAVE_PACOTE, pacote);
         startActivity(intent);
+    }
 
+    private void inicializaCampos(Pacote pacote) {
+        mostraLocal(pacote);
+        mostraImagem(pacote);
+        mostraDias(pacote);
+        mostraPreco(pacote);
+        mostraData(pacote);
     }
 
     private void mostraData(Pacote pacote) {

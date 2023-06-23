@@ -105,7 +105,7 @@
         android:autofillHints="Nome que consta em seu cartão" />
 
     <Button
-        android:id="@+id/resumo_pacote_botao_realiza_pagamento"
+        android:id="@+id/pagamento_botao_finaliza_compra"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
